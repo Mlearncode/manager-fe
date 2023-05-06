@@ -7,4 +7,9 @@ export default defineConfig({
     host: 'localhost',
   },
   plugins: [vue()],
+  resolve: {
+    alias: {
+      '@': '/src'
+    }
+  }
 })

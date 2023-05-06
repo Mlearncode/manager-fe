@@ -2,9 +2,9 @@
  * axios的二次封装
  */
 import axios from 'axios'
-import config from './../config'
+import config from '@/config'
 import { ElMessage } from 'element-plus'
-import router from './../router'
+import router from '@/router'
 
 const TOKEN_INVALID = 'Token认证失败, 请重新登录'
 const NETWORK_ERROR = '网络请求异常, 请稍后重试'
@@ -32,7 +32,7 @@ service.interceptors.response.use((res) => {
     ElMessage.error(TOKEN_INVALID)
     setTimeout(() => {
       router.push('/login')
-    }, 15000)
+    }, 1500)
     return Promise.reject(TOKEN_INVALID)
   } else {
     ElMessage.error(msg || NETWORK_ERROR)
@@ -46,28 +46,32 @@ service.interceptors.response.use((res) => {
  * @returns 
  */
 function request(options) {
-  options.method = options.method || 'get'
-  if (options.method.toLowerCase() === 'get') {
-    options.params = options.data
-  }
+    options.method = options.method || 'get'
+    if (options.method.toLowerCase() === 'get') {
+        options.params = options.data;
+    }
+    let isMock = config.mock;
+    if (typeof options.mock != 'undefined') {
+        isMock = options.mock;
+    }
+    if (config.env === 'prod') {
+        service.defaults.baseURL = config.baseApi
+    } else {
+        service.defaults.baseURL = isMock ? config.mockApi : config.baseApi
+    }
 
-  if (config.env === 'prod') {
-    service.defaults.baseURL = config.baseApi
-  } else {
-    service.defaults.baseURL = config.mock ? config.mockApi :  config.baseApi
-  }
-  return service(options)
+    return service(options)
 }
 
 ['get', 'post', 'put', 'delete', 'patch'].forEach((item) => {
-  request[item] = (url, data, options) => {
-    return request({
-      url,
-      data,
-      method: item,
-      ...options
-    })
-  }
+    request[item] = (url, data, options) => {
+        return request({
+            url,
+            data,
+            method: item,
+            ...options
+        })
+    }
 })
 
-export default request
+export default request;
