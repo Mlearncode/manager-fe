@@ -9,6 +9,8 @@ import request from './utils/request'
 import storage from './utils/storage'
 import api from './api'
 
+console.log(import.meta.env.MODE);
+
 const app = createApp(App)
 
 app.config.globalProperties.$request = request

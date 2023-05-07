@@ -9,5 +9,8 @@ export default {
       method: 'post',
       data: params,
     })
+  },
+  noticeCount(params) {
+    return request.get('/menu/list')
   }
 }
