@@ -50,6 +50,9 @@ function request(options) {
     if (options.method.toLowerCase() === 'get') {
         options.params = options.data;
     }
+  if (typeof options.mock != 'undefinded') {
+      config.mock = options.mock
+    }
     let isMock = config.mock;
     if (typeof options.mock != 'undefined') {
         isMock = options.mock;
