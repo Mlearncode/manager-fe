@@ -15,29 +15,12 @@
 					router
 					background-color="#31475e"
 					text-color="#fff"
-					default-active="2"
+					:default-active="activeMenu"
 					class="nav-menu"
 					:collapse="isCollapse"
           
 				>
-					<el-sub-menu index="1">
-						<template #title>
-							<el-icon><location /></el-icon>
-							<span>系统管理</span>
-						</template>
-						<el-menu-item index="1-1">用户管理</el-menu-item>
-						<el-menu-item index="1-2">菜单管理</el-menu-item>
-						<el-menu-item index="1-3">角色管理</el-menu-item>
-						<el-menu-item index="1-4">部门管理</el-menu-item>
-					</el-sub-menu>
-					<el-sub-menu index="2">
-						<template #title>
-							<el-icon><location /></el-icon>
-							<span>审批管理</span>
-						</template>
-						<el-menu-item index="2-1">休假申请</el-menu-item>
-						<el-menu-item index="2-2">待我审批</el-menu-item>
-					</el-sub-menu>
+					<tree-menu :userMenu="userMenu"/>
 				</el-menu>
 			</div>
 			<div :class="['content-right', isCollapse ? 'fold' : 'unfold']">
@@ -47,11 +30,13 @@
 							<Fold v-if="!isCollapse" />
 							<Expand v-else />
 						</el-icon>
-						<div class="bread">面包屑</div>
+						<div class="bread">
+              <BreadCrumb/>
+            </div>
 					</div>
 					<div class="user-info">
 						<el-badge
-							:is-dot="true"
+							:is-dot="noticeCount > 0 ? true : false"
 							class="notice"
               type="danger"
 						>
@@ -83,14 +68,19 @@
 </template>
 
 <script>
+import TreeMenu from './TreeMenu.vue'
+import BreadCrumb from './BreadCrumb.vue'
+
 export default {
-	name: 'Home',
+  name: 'Home',
+  components: { TreeMenu, BreadCrumb },
 	data() {
     return {
       userInfo: this.$store.state.userInfo,
       isCollapse: false,
       noticeCount: 0,
       userMenu: [],
+      activeMenu: location.hash.split(1),
 		}
   },
   mounted() {
