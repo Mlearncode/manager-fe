@@ -112,6 +112,7 @@
 				</el-table-column>
 			</el-table>
 			<el-pagination
+				v-if="pager.size > 0"
 				class="pagination"
 				@current-change="handleCurrentChange"
 				:page-size="pager.size"
@@ -241,11 +242,14 @@
 
 <script>
 import { getCurrentInstance, onMounted, ref, reactive, toRaw } from 'vue'
+import util from '@/utils/toolUtils'
 export default {
 	name: 'User',
 	setup() {
 		const { proxy } = getCurrentInstance()
-		const user = reactive({})
+		const user = reactive({
+			state: 1,
+		})
 		const userList = ref([])
 		//定义动态表格-格式
 		const columns = reactive([
@@ -285,10 +289,16 @@ export default {
 			{
 				label: '注册时间',
 				prop: 'createTime',
+				formatter: (row, column, val) => {
+					return util.formateDate(new Date(val))
+				},
 			},
 			{
 				label: '最后登录时间',
 				prop: 'lastLoginTime',
+				formatter: (row, column, val) => {
+					return util.formateDate(new Date(val))
+				},
 			},
 		])
 		//初始化分页对象

@@ -11,7 +11,12 @@ export default {
 		})
 	},
 	noticeCount(params) {
-		return request.get('/menu/list')
+		return request({
+			url: '/menu/list',
+			method: 'get',
+			data: {},
+			mock: true,
+		})
 	},
 	menuList() {
 		return request({
@@ -26,7 +31,7 @@ export default {
 			url: '/users/list',
 			method: 'get',
 			data: params,
-			mock: true,
+			mock: false,
 		})
 	},
 	userDel(params) {
@@ -34,7 +39,6 @@ export default {
 			url: '/users/delete',
 			method: 'post',
 			data: params,
-			mock: true,
 		})
 	},
 	getRoleList() {
@@ -52,13 +56,12 @@ export default {
 			data: {},
 			mock: true,
 		})
-  },
-  userSubmit(params) {
-    return request({
-      url: '/users/operate',
-      method: 'post',
-      data: params,
-      mock: true
-    })
-  }
+	},
+	userSubmit(params) {
+		return request({
+			url: '/users/operate',
+			method: 'post',
+			data: params,
+		})
+	},
 }
