@@ -18,6 +18,7 @@
 					:default-active="activeMenu"
 					class="nav-menu"
 					:collapse="isCollapse"
+					:collapse-transition="false"
           
 				>
 					<tree-menu :userMenu="userMenu"/>
@@ -58,9 +59,7 @@
 					</div>
 				</div>
 				<div class="wrapper">
-					<div class="main-page">
 						<router-view></router-view>
-					</div>
 				</div>
 			</div>
 		</div>

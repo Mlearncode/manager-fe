@@ -1,5 +1,5 @@
 <template>
-	<el-breadcrumb separator="ArrowRight">
+	<el-breadcrumb :separator-icon="ArrowRight">
 		<el-breadcrumb-item
 			v-for="(item, index) in breadList"
 			:key="item.path"
@@ -13,6 +13,11 @@
 		</el-breadcrumb-item>
 	</el-breadcrumb>
 </template>
+
+<script setup>
+import { ArrowRight } from '@element-plus/icons-vue'
+</script>
+
 <script>
 export default {
 	name: 'BreadCrumb',
