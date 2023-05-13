@@ -19,11 +19,19 @@ const routes = [
       },
       {
         name: 'user',
-        path: '/user',
+        path: '/sys/user',
         meta: {
           title: '用户管理'
         },
         component: () => import('@/views/User.vue')
+      },
+      {
+        name: 'menu',
+        path: '/sys/menu',
+        meta: {
+          title: '菜单管理'
+        },
+        component: () => import('@/views/Menu.vue')
       },
     ]
   },
