@@ -9,8 +9,10 @@
   </div>
 </template>
 
-<script setup>
-
+<script>
+export default {
+  name: 'Welcome',
+}
 </script>
 
 <style lang="scss">

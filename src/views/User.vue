@@ -289,14 +289,14 @@ export default {
 				label: '注册时间',
 				prop: 'createTime',
 				formatter: (row, column, val) => {
-					return util.formateDate(val)
+					return util.formateDate(new Date(val))
 				},
 			},
 			{
 				label: '最后登录时间',
 				prop: 'lastLoginTime',
 				formatter: (row, column, val) => {
-					return util.formateDate(val)
+					return util.formateDate(new Date(val))
 				},
 			},
 		])

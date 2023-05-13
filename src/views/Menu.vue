@@ -38,7 +38,7 @@
 					>
 					<el-button
 						type="danger"
-						@click="handleReset('menuForm')"
+						@click="handleReset('form')"
 						>重置</el-button
 					>
 				</el-form-item>
@@ -58,10 +58,6 @@
 				:tree-props="{ children: 'children' }"
 			>
 				<el-table-column
-					type="selection"
-					width="55"
-				/>
-				<el-table-column
 					v-for="item in columns"
 					:key="item.prop"
 					:prop="item.prop"
@@ -72,7 +68,7 @@
 				<el-table-column
 					fixed="right"
 					label="操作"
-					width="150"
+					width="180"
 				>
 					<template #default="scope">
 						<el-button
@@ -114,7 +110,7 @@
 					<el-cascader
 						v-model="menuForm.parentId"
 						:options="menuList"
-						:prop="{ checkStrictly: true, value: '_id', label: 'menuName' }"
+						:props="{ checkStrictly: true, value: '_id', label: 'menuName' }"
 						clearable
 					/>
 					<span>默认创建一级菜单</span>
@@ -212,7 +208,6 @@ export default {
 			action: '',
 			queryForm: {
 				menuState: 1,
-				menuType: 1,
 			},
 			menuList: [],
 			columns: [
@@ -261,11 +256,15 @@ export default {
 					label: '创建时间',
 					prop: 'createTime',
 					formatter(row, column, val) {
-						return util.formateDate(val)
+						return util.formateDate(new Date(val))
 					},
 				},
 			],
-			menuForm: {},
+			menuForm: {
+        parentId: [null],
+        menuType: 1,
+        menuState: 1,
+      },
 			rules: {
 				menuName: [
 					{
@@ -311,7 +310,7 @@ export default {
 				)
 			}
 		},
-		handleEdit() {
+		handleEdit(row) {
 			this.dialogVisible = true
 			this.action = 'edit'
 			this.$nextTick(() => {

@@ -2,7 +2,7 @@
   <template v-for="menu in userMenu">
     <el-sub-menu v-if="menu.children && menu.children.length>0 && menu.children[0].menuType" :index="menu.path" :key="menu._id">
 		<template #title>
-			<el-icon>&lt;{{ menu.icon }}/&lt;</el-icon>
+			<component class="el-icon" :is="menu.icon"></component>
 			<span>{{ menu.menuName }}</span>
 		</template>
 		<tree-menu :userMenu="menu.children" />

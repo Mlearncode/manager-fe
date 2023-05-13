@@ -18,12 +18,11 @@ export default {
 			mock: true,
 		})
 	},
-	getmenuList() {
+	getmenuList(params) {
 		return request({
 			url: '/menu/list',
 			method: 'get',
-			data: {},
-			mock: true,
+			data: params,
 		})
 	},
 	getuserList(params) {
@@ -31,7 +30,6 @@ export default {
 			url: '/users/list',
 			method: 'get',
 			data: params,
-			mock: false,
 		})
 	},
 	userDel(params) {

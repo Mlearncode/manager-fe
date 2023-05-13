@@ -20,7 +20,7 @@ const service = axios.create({
 service.interceptors.request.use((req) => {
 	const headers = req.headers
 	const { token = '' } = storage.getItem('userInfo') || {}
-	if (!headers.Authorization) headers.Authorization = 'Bearer' + token
+	if (!headers.Authorization) headers.Authorization = 'Bearer ' + token;
 	return req
 })
 
@@ -51,7 +51,7 @@ function request(options) {
 	if (options.method.toLowerCase() === 'get') {
 		options.params = options.data
 	}
-  let isMock = config.mock;
+	let isMock = config.mock
 	if (typeof options.mock != 'undefined') {
 		isMock = options.mock
 	}

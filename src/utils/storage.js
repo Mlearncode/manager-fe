@@ -10,7 +10,7 @@ export default {
     window.localStorage.setItem(config.namespace, JSON.stringify(storage))
   },
   getItem(key) {
-    return this.getStorage()
+    return this.getStorage()[key]
   },
   getStorage() {
     return JSON.parse(window.localStorage.getItem(config.namespace) || '{}')
