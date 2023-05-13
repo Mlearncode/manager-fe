@@ -112,7 +112,6 @@
 				</el-table-column>
 			</el-table>
 			<el-pagination
-				v-if="pager.size > 0"
 				class="pagination"
 				@current-change="handleCurrentChange"
 				:page-size="pager.size"
@@ -150,7 +149,7 @@
 						:disabled="action == 'edit'"
 						placeholder="请输入用户邮箱"
 					>
-						<template #append>@qq.com</template>
+						<template #append v-if="action == 'add'">@qq.com</template>
 					</el-input>
 				</el-form-item>
 				<el-form-item
@@ -424,12 +423,12 @@ export default {
 			proxy.$refs.newUserInfo.validate(async (valid) => {
 				if (valid) {
 					let params = toRaw(newUserForm)
-					params.userEmail += '@qq.com'
+					params.userEmail += action.value == 'add' ? '@qq.com' : ''
 					params.action = action.value
 					let res = proxy.$api.userSubmit(params)
-					if (res) {
+					if (res) { 
 						dialogVisible.value = false
-						proxy.$message.success('用户创建成功')
+						action.value == 'add' ? proxy.$message.success('用户创建成功') : proxy.$message.success('编辑成功')
 						getUserList()
 					}
 				}

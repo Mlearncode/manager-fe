@@ -1,27 +1,35 @@
 <template>
 	<div class="login-wrapper">
 		<div class="modal">
-			<el-form ref="userForm" :model="user" status-icon :rules="rules">
-        <div class="title">火星</div>
-        <el-form-item prop="userName">
-          <el-input
-            type="text"
-            prefix-icon="Avatar"
-            v-model="user.userName"
-          />
-        </el-form-item>
+			<el-form
+				ref="userForm"
+				:model="user"
+				status-icon
+				:rules="rules"
+			>
+				<div class="title">通用后台管理系统</div>
+				<el-form-item prop="userName">
+					<el-input
+						type="text"
+						prefix-icon="Avatar"
+						v-model="user.userName"
+					/>
+				</el-form-item>
 				<el-form-item prop="userPwd">
-          <el-input
-            type="password"
-            prefix-icon="View"
-            v-model="user.userPwd"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" class="btn-login" @click="login"
-            >登录</el-button
-          >
-        </el-form-item>
+					<el-input
+						type="password"
+						prefix-icon="View"
+						v-model="user.userPwd"
+					/>
+				</el-form-item>
+				<el-form-item>
+					<el-button
+						type="primary"
+						class="btn-login"
+						@click="login"
+						>登录</el-button
+					>
+				</el-form-item>
 			</el-form>
 		</div>
 	</div>
@@ -33,8 +41,8 @@ export default {
 	data() {
 		return {
 			user: {
-				userName: "admin",
-				userPwd: "123456",
+				userName: 'admin',
+				userPwd: 'admin',
 			},
 			rules: {
 				userName: [
@@ -52,12 +60,12 @@ export default {
 					},
 				],
 			},
-		};
+		}
 	},
 	methods: {
 		login() {
 			this.$refs.userForm.validate((valid) => {
-				if (!valid) return;
+				if (!valid) return
 				this.$api.login(this.user).then((res) => {
 					this.$store.commit('saveUserInfo', res)
 					this.$router.push('/welcome')
