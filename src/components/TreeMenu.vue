@@ -1,6 +1,6 @@
 <template>
   <template v-for="menu in userMenu">
-    <el-sub-menu v-if="menu.children && menu.children.length>0 && menu.children[0].menuType" :index="menu.path" :key="menu._id">
+    <el-sub-menu v-if="menu.children && menu.children.length>0 && menu.children[0].menuType == 1" :index="menu.path" :key="menu._id">
 		<template #title>
 			<component class="el-icon" :is="menu.icon"></component>
 			<span>{{ menu.menuName }}</span>

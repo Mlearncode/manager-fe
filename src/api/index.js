@@ -12,10 +12,9 @@ export default {
 	},
 	noticeCount(params) {
 		return request({
-			url: '/menu/list',
+			url: '/leave/count',
 			method: 'get',
 			data: {},
-			mock: true,
 		})
 	},
 	getmenuList(params) {
@@ -101,5 +100,12 @@ export default {
 			method: 'post',
 			data: params
 		})
-	}
+	},
+	getUserPermission(params) {
+		return request({
+			url: '/users/getPermission',
+			method: 'get',
+			data: {}
+		})
+	},
 }

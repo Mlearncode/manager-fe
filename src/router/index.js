@@ -1,4 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import storage from '../utils/storage'
+import api from '../api'
+import util from '../utils/toolUtils'
 
 const routes = [
 	{
@@ -16,36 +19,9 @@ const routes = [
 				component: () => import('@/views/Welcome.vue'),
 			},
 			{
-				name: 'user',
-				path: '/sys/user',
-				meta: {
-					title: '用户管理',
-				},
-				component: () => import('@/views/User.vue'),
-			},
-			{
 				name: 'menu',
 				path: '/sys/menu',
-				meta: {
-					title: '菜单管理',
-				},
 				component: () => import('@/views/Menu.vue'),
-			},
-			{
-				name: 'role',
-				path: '/sys/role',
-				meta: {
-					title: '角色管理',
-				},
-				component: () => import('@/views/Role.vue'),
-			},
-			{
-				name: 'dept',
-				path: '/sys/dept',
-				meta: {
-					title: '部门管理',
-				},
-				component: () => import('@/views/Dept.vue'),
 			},
 		],
 	},
@@ -57,11 +33,59 @@ const routes = [
 		},
 		component: () => import('@/views/Login.vue'),
 	},
+	{
+		name: '404',
+		path: '/404',
+		meta: {
+			title: '页面不存在',
+		},
+		component: () => import('@/views/404.vue'),
+	},
 ]
 
 const router = createRouter({
 	history: createWebHashHistory(),
 	routes,
 })
+
+async function loadAsyncRoutes() {
+	let userInfo = storage.getItem('userInfo') || {}
+	if (userInfo.token) {
+		try {
+			const { menuList } = await api.getUserPermission()
+			let routes = util.generateRoute(menuList)
+			routes.map((route) => {
+				let url = `./../views/${route.component}.vue`
+				route.component = () => import(url)
+				router.addRoute('home', route)
+			})
+			console.log(routes);
+		} catch (error) {
+			console.log(error)
+		}
+	}
+}
+
+await loadAsyncRoutes()
+
+//导航守卫
+router.beforeEach((to, from, next) => {
+	if (checkPermission(to.path)) {
+		document.title = to.meta.title
+		next()
+	} else {
+		next('/404')
+	}
+})
+
+function checkPermission(path) {
+	let hasPermission = router
+		.getRoutes()
+		.filter((route) => route.path == path).length
+	if (hasPermission) {
+		return true
+	}
+	return false
+}
 
 export default router

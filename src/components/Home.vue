@@ -93,7 +93,7 @@ export default {
     },
     handleLogout(key) {
       this.$store.commit('saveUserInfo', '');
-      this.userInfo = null;
+      this.userInfo = {};
       this.$router.push('/login');
     },
     async getNoticeCount() {
@@ -106,8 +106,10 @@ export default {
     },
     async getMenuList() {
       try {
-        const list = await this.$api.getmenuList();
-        this.userMenu = list;
+        const { menuList, actionList} = await this.$api.getUserPermission();
+				this.userMenu = menuList;
+				this.$store.commit("saveMenuList",menuList)
+				this.$store.commit("saveActionList",actionList)
       } catch (error) {
         console.log(error);
       }
