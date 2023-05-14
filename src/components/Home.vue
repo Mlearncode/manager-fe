@@ -15,6 +15,7 @@
 					router
 					background-color="#31475e"
 					text-color="#fff"
+					active-text-color="#3fb984"
 					:default-active="activeMenu"
 					class="nav-menu"
 					:collapse="isCollapse"
