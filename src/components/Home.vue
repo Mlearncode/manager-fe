@@ -79,10 +79,10 @@ export default {
       isCollapse: false,
       noticeCount: 0,
       userMenu: [],
-      activeMenu: location.hash.split(1),
+      activeMenu: location.hash.slice(1),
 		}
   },
-  mounted() {
+	mounted() {
     this.getNoticeCount();
     this.getMenuList();
   },

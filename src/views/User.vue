@@ -408,7 +408,7 @@ export default {
 		const roleList = ref([])
 		//获取角色列表
 		const getRoleList = async () => {
-			let list = await proxy.$api.getRoleList()
+			let list = await proxy.$api.getRoleAllList()
 			roleList.value = list
 		}
 		//弹窗取消

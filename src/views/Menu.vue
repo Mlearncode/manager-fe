@@ -332,7 +332,7 @@ export default {
 					}
 					await this.$api.menuSubmit(params)
 					this.dialogVisible = false
-					this.$message.success("操作成功")
+					action == 'add' ? this.$message.success("新增成功") : this.$message.success("编辑成功")
 					this.handleReset('dialogForm')
 					this.getMenuList()
 				}
