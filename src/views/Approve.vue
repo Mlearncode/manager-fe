@@ -319,6 +319,8 @@ export default {
 						await proxy.$api.leaveApprove(params)
 						handleClose()
 						proxy.$message.success('处理成功')
+						getApplyList()
+						proxy.$store.commit("saveNoticeCount", proxy.$store.noticeCount - 1)
 					} catch (error) {
 						console.log(error)
 					}

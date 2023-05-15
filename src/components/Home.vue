@@ -41,6 +41,7 @@
 							:is-dot="noticeCount > 0 ? true : false"
 							class="notice"
               type="danger"
+							@click="$router.push('/audit/approve')"
 						>
 							<el-icon> <Bell /></el-icon>
             </el-badge>
@@ -82,7 +83,12 @@ export default {
       userMenu: [],
       activeMenu: location.hash.slice(1),
 		}
-  },
+	},
+	computed: {
+		noticeCount(){
+			return this.$store.state.noticeCount
+		}
+	},
 	mounted() {
     this.getNoticeCount();
     this.getMenuList();
@@ -99,7 +105,7 @@ export default {
     async getNoticeCount() {
       try {
         const count = await this.$api.noticeCount();
-        this.noticeCount = count;
+        this.$store.commit("saveNoticeCount", count)
       } catch (error) {
         console.log(error);
       }
@@ -179,6 +185,7 @@ export default {
           font-size: 22px;
           line-height: 30px;
           margin-right: 15px;
+					cursor: pointer;
         }
         .user-link{
           cursor: pointer;
