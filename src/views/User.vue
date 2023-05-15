@@ -427,8 +427,8 @@ export default {
 					params.action = action.value
 					let res = proxy.$api.userSubmit(params)
 					if (res) { 
-						dialogVisible.value = false
 						action.value == 'add' ? proxy.$message.success('用户创建成功') : proxy.$message.success('编辑成功')
+						handleClose()
 						getUserList()
 					}
 				}
