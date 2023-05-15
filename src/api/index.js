@@ -10,20 +10,7 @@ export default {
 			data: params,
 		})
 	},
-	noticeCount(params) {
-		return request({
-			url: '/leave/count',
-			method: 'get',
-			data: {},
-		})
-	},
-	getmenuList(params) {
-		return request({
-			url: '/menu/list',
-			method: 'get',
-			data: params,
-		})
-	},
+//user
 	getuserList(params) {
 		return request({
 			url: '/users/list',
@@ -38,6 +25,13 @@ export default {
 			data: {},
 		})
 	},
+	userSubmit(params) {
+		return request({
+			url: '/users/operate',
+			method: 'post',
+			data: params,
+		})
+	},
 	userDel(params) {
 		return request({
 			url: '/users/delete',
@@ -45,6 +39,15 @@ export default {
 			data: params,
 		})
 	},
+	getUserPermission(params) {
+		return request({
+			url: '/users/getPermission',
+			method: 'get',
+			data: {}
+		})
+	},
+
+//role
 	getRoleAllList() {
 		return request({
 			url: '/roles/allList',
@@ -59,37 +62,9 @@ export default {
 			data: params,
 		})
 	},
-	getDeptList(params) {
-		return request({
-			url: '/dept/list',
-			method: 'get',
-			data: params,
-		})
-	},
-	userSubmit(params) {
-		return request({
-			url: '/users/operate',
-			method: 'post',
-			data: params,
-		})
-	},
-	menuSubmit(params) {
-		return request({
-			url: '/menu/operate',
-			method: 'post',
-			data: params,
-		})
-	},
 	roleSubmit(params) {
 		return request({
 			url: '/roles/operate',
-			method: 'post',
-			data: params,
-		})
-	},
-	deptSubmit(params) {
-		return request({
-			url: '/dept/operate',
 			method: 'post',
 			data: params,
 		})
@@ -101,11 +76,59 @@ export default {
 			data: params
 		})
 	},
-	getUserPermission(params) {
+
+	//dept
+	getDeptList(params) {
 		return request({
-			url: '/users/getPermission',
+			url: '/dept/list',
 			method: 'get',
-			data: {}
+			data: params,
 		})
 	},
+	deptSubmit(params) {
+		return request({
+			url: '/dept/operate',
+			method: 'post',
+			data: params,
+		})
+	},
+
+	//menu
+	getmenuList(params) {
+		return request({
+			url: '/menu/list',
+			method: 'get',
+			data: params,
+		})
+	},
+	menuSubmit(params) {
+		return request({
+			url: '/menu/operate',
+			method: 'post',
+			data: params,
+		})
+	},
+
+	//leave
+	noticeCount(params) {
+		return request({
+			url: '/leave/count',
+			method: 'get',
+			data: {},
+		})
+	},
+	getApplyList(params) {
+		return request({
+			url: '/leave/list',
+			method: 'get',
+			data: params,
+		})
+	},
+	leaveSubmit(params) {
+		return request({
+			url: '/leave/operate',
+			method: 'post',
+			data: params,
+		})
+	}
 }
