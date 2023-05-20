@@ -1,68 +1,17 @@
 <template>
 	<div class="user-manager">
 		<div class="query-form">
-			<el-form
-				ref="userForm"
-				:inline="true"
-				:model="user"
-			>
-				<el-form-item
-					label="用户ID"
-					prop="userId"
-				>
-					<el-input
-						v-model="user.userId"
-						placeholder="请输入用户ID"
-					/>
-				</el-form-item>
-				<el-form-item
-					label="用户名"
-					prop="userName"
-				>
-					<el-input
-						v-model="user.userName"
-						placeholder="请输入用户名"
-					/>
-				</el-form-item>
-				<el-form-item
-					label="状态"
-					prop="state"
-				>
-					<el-select v-model="user.state">
-						<el-option
-							:value="0"
-							label="所有"
-						></el-option>
-						<el-option
-							:value="1"
-							label="在职"
-						></el-option>
-						<el-option
-							:value="2"
-							label="离职"
-						></el-option>
-						<el-option
-							:value="3"
-							label="试用期"
-						></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item>
-					<el-button
-						type="primary"
-						@click="handleQuery"
-						>查询</el-button
-					>
-					<el-button
-						type="danger"
-						@click="handleReset('userForm')"
-						>重置</el-button
-					>
-				</el-form-item>
-			</el-form>
+			<query-form :form="userForm" v-model="user" @handleQuery="handleQuery"></query-form>
 		</div>
-		<div class="base-table">
-			<div class="action">
+		<base-table
+			:columns="columns"
+			:data="userList"
+			:pager="pager"
+			@selection-change="handleSelectChange" 
+			@handleAction="handleAction"
+			@handleCurrentChange="handleCurrentChange"
+		>
+			<template #action>
 				<el-button
 					type="primary"
 					@click="handleCreate"
@@ -73,53 +22,8 @@
 					@click="handlePathDel"
 					>批量删除</el-button
 				>
-			</div>
-			<el-table
-				:data="userList"
-				@selection-change="handleSelectChange"
-			>
-				<el-table-column
-					type="selection"
-					width="55"
-				/>
-				<el-table-column
-					v-for="item in columns"
-					:key="item.prop"
-					:prop="item.prop"
-					:label="item.label"
-					:width="item.width"
-					:formatter="item.formatter"
-				/>
-				<el-table-column
-					fixed="right"
-					label="操作"
-					width="150"
-				>
-					<template #default="scope">
-						<el-button
-							type="primary"
-							size="small"
-							@click="handleEdit(scope.row)"
-							>编辑</el-button
-						>
-						<el-button
-							type="danger"
-							size="small"
-							@click="handleDel(scope.row)"
-							>删除</el-button
-						>
-					</template>
-				</el-table-column>
-			</el-table>
-			<el-pagination
-				class="pagination"
-				@current-change="handleCurrentChange"
-				:page-size="pager.size"
-				background
-				layout="prev, pager, next"
-				:total="Number(pager.total)"
-			/>
-		</div>
+			</template>
+		</base-table>
 		<el-dialog
 			:title="action == 'add' ? '用户新增' : '编辑用户'"
 			v-model="dialogVisible"
@@ -149,7 +53,11 @@
 						:disabled="action == 'edit'"
 						placeholder="请输入用户邮箱"
 					>
-						<template #append v-if="action == 'add'">@qq.com</template>
+						<template
+							#append
+							v-if="action == 'add'"
+							>@qq.com</template
+						>
 					</el-input>
 				</el-form-item>
 				<el-form-item
@@ -253,6 +161,9 @@ export default {
 		//定义动态表格-格式
 		const columns = reactive([
 			{
+				type: 'selection',
+			},
+			{
 				label: '用户ID',
 				prop: 'userId',
 			},
@@ -299,7 +210,62 @@ export default {
 					return util.formateDate(new Date(val))
 				},
 			},
+			{
+				type: 'action',
+				label: '操作',
+				width: 200,
+				list: [
+					{
+						type: 'primary',
+						text: '编辑',
+						visible: true,
+					},
+					{
+						type: 'danger',
+						text: '删除',
+						visible: true,
+					},
+				],
+			},
 		])
+		const userForm = [
+			{
+				type: 'input',
+				label: "用户ID",
+				model: 'userId',
+				placeholder: "请输入用户ID"
+			},
+			{
+				type: 'input',
+				label: "用户名称",
+				model: 'userName',
+				placeholder: "请输入用户名称"
+			},
+			{
+				type: 'select',
+				label: "状态",
+				model: 'state',
+				placeholder: "请选择状态",
+				options: [
+					{
+						label: "所有",
+						value: 0
+					},
+					{
+						label: "在职",
+						value: 1
+					},
+					{
+						label: "离职",
+						value: 2
+					},
+					{
+						label: "试用期",
+						value: 3
+					},
+				]
+			},
+		]
 		//初始化分页对象
 		const pager = reactive({
 			pageNum: 1,
@@ -314,7 +280,7 @@ export default {
 		})
 		//获取用户列表
 		const getUserList = async () => {
-			let params = { ...user, ...pager }
+			let params = { ...user.value, ...pager }
 			try {
 				const { list, page } = await proxy.$api.getuserList(params)
 				userList.value = list
@@ -324,8 +290,8 @@ export default {
 			}
 		}
 		//查询, 获取用户列表
-		const handleQuery = () => {
-			getUserList()
+		const handleQuery = (values) => {
+			getUserList(values)
 		}
 		//重置查询表单
 		const handleReset = (form) => {
@@ -426,8 +392,10 @@ export default {
 					params.userEmail += action.value == 'add' ? '@qq.com' : ''
 					params.action = action.value
 					let res = proxy.$api.userSubmit(params)
-					if (res) { 
-						action.value == 'add' ? proxy.$message.success('用户创建成功') : proxy.$message.success('编辑成功')
+					if (res) {
+						action.value == 'add'
+							? proxy.$message.success('用户创建成功')
+							: proxy.$message.success('编辑成功')
 						handleClose()
 						getUserList()
 					}
@@ -442,12 +410,20 @@ export default {
 				Object.assign(newUserForm, row)
 			})
 		}
+		const handleAction = ({ index, row }) => {
+			if (index == 0) {
+				handleEdit(row)
+			} else if (index == 1) {
+				handleDel(row)
+			}
+		}
 		return {
 			user,
 			userList,
 			columns,
 			pager,
 			checkUser,
+			userForm,
 			newUserForm,
 			dialogVisible,
 			rules,
@@ -464,6 +440,7 @@ export default {
 			handleClose,
 			handleSubmit,
 			handleEdit,
+			handleAction,
 		}
 	},
 }

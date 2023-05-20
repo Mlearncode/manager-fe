@@ -80,6 +80,7 @@
 						:props="{ checkStrictly: true, value: '_id', label: 'deptName' }"
 						:options="deptList"
 						:show-all-levels="true"
+						:collapse-tags="false"
 						clearable
 					></el-cascader>
 				</el-form-item>

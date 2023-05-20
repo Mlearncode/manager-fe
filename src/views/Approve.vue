@@ -1,61 +1,12 @@
 <template>
 	<div class="approve-manager">
 		<div class="query-form">
-			<el-form
-				ref="form"
-				:inline="true"
-				:model="queryForm"
-			>
-				<el-form-item
-					label="审批状态"
-					prop="applyState"
-				>
-					<el-select v-model="queryForm.applyState">
-						<el-option
-							value=""
-							label="全部"
-						></el-option>
-						<el-option
-							:value="1"
-							label="待审批"
-						></el-option>
-						<el-option
-							:value="2"
-							label="审批中"
-						></el-option>
-						<el-option
-							:value="3"
-							label="审批拒绝"
-						></el-option>
-						<el-option
-							:value="4"
-							label="审批通过"
-						></el-option>
-						<el-option
-							:value="5"
-							label="作废"
-						></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item>
-					<el-button
-						type="primary"
-						@click="getApplyList"
-						>查询</el-button
-					>
-					<el-button
-						type="danger"
-						@click="handleReset('userForm')"
-						>重置</el-button
-					>
-				</el-form-item>
-			</el-form>
+			<query-form :form="form" v-model="queryForm" @handleQuery="handleQuery"></query-form>
 		</div>
 		<div class="base-table">
 			<div class="action"></div>
 			<el-table
 				:data="applyList"
-				@selection-change="handleSelectChange"
 			>
 				<el-table-column
 					v-for="item in columns"
@@ -168,6 +119,40 @@ export default {
 		const queryForm = reactive({
 			applyState: 1,
 		})
+		const form = [
+			{
+				type: 'select',
+				label: "审批状态",
+				model: 'applyState',
+				placeholder: "请选择状态",
+				options: [
+					{
+						label: "全部",
+						value: 0
+					},
+					{
+						label: "待审批",
+						value: 1
+					},
+					{
+						label: "审批中",
+						value: 2
+					},
+					{
+						label: "审批拒绝",
+						value: 3
+					},
+					{
+						label: "审批通过",
+						value: 3
+					},
+					{
+						label: "作废",
+						value: 5
+					},
+				]
+			},
+		]
 		//定义动态表格-格式
 		const columns = reactive([
 			{
@@ -273,6 +258,9 @@ export default {
 				},
 			],
 		}
+		const handleQuery = (values) => {
+			getApplyList(values)
+		}
 		//重置查询表单
 		const handleReset = (form) => {
 			proxy.$refs[form].resetFields()
@@ -334,6 +322,7 @@ export default {
 			rules,
 			detailVisible,
 			userInfo,
+			form,
 			detailForm,
 			auditForm,
 			applyList,
